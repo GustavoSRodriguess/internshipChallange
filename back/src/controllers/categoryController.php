@@ -2,6 +2,8 @@
 
 require_once "../models/categoryModels.php";
 
+header('Content-Type: application/json; charset=utf-8');
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['code'])) {
         echo json_encode(Category::delCat($_POST['code']));

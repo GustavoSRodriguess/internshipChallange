@@ -1,3 +1,6 @@
+<?php
+header("Cache-Control: no-cache, must-revalidate");
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -21,7 +24,7 @@
         </div>
         <div class="body">
             <div class="leftSide">
-                <form id="shopForm" onsubmit="cart.saveOrder()">
+                <form action="javascript:void(0);" id="shopForm" onsubmit="cart.saveOrder()">
                     <select name="product" id="prod" required onchange="cart.autoComplete()">
                         <option value=" " disabled selected>Product</option>
                     </select><br>
@@ -60,6 +63,6 @@
         </div>
     </div>
     <script src="../index.js"></script>
-   <script src="../otherTabs/history/history.js"></script>
+    
     </body>
 </html>

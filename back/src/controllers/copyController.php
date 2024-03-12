@@ -1,6 +1,8 @@
 <?php
 require_once "../config/config.php";
 
+header('Content-Type: application/json; charset=utf-8');
+
 function copyCartItemsToOrder() {
     try {
         $conn = Connection::getConnection();

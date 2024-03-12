@@ -36,34 +36,43 @@ const cart = new(function(){
                 this.price.value = selectedProduct.price;
                 this.tax.value = selectedProduct.category_tax;
             }else{
-                 console.log('eror');
+                 //console.log('eror');
             }         
         })
         .catch((error) => console.log(error))
     }
 
-    this.checkValue = (callback) => {
-        fetch('../controllers/prodController.php')
-        .then(res => res.json())
-        .then((data) => {
+    this.checkValue = async () => {
+        try {
+            //debugger
+            const response = await fetch("../controllers/prodController.php");
+            const data = await response.json();
             const insertAmount = this.amount.value;
-            const prodSelect = this.prod.value
+            const prodSelect = this.prod.value;
             const findProd = data.find(prod => prod.code == prodSelect);
-
-            if(findProd && insertAmount <= findProd.amount){
-                    console.log('tudo certo')
-                    callback(true)
-            }else{
-                var sub = parseInt(insertAmount) - parseInt(findProd.amount);
-                alert(`Too many items, remove ${sub} items` )
-                callback(false)
+            const foundProdAmount = parseInt(findProd.amount);
+            //console.log(prodSelect)
+            //console.log(findProd.amount)
+            //console.log(findProd.code)
+            //console.log(insertAmount)
+    
+            if(findProd && insertAmount <= foundProdAmount){
+                //console.log('tudo certo');
+                return true;
+            } else {
+                var sub = parseInt(insertAmount) - parseInt(foundProdAmount);
+                alert(`Too many items, remove ${sub} items`);
+                return false;
             }
-        })
-        .catch((error) => {console.log(error); callback(false)})
-    }
+        } catch(error) {
+            //console.log(error);
+            return false;
+        }
+    };
 
     this.show = () => {
-        fetch("../controllers/cartController.php")
+        
+        fetch("/controllers/cartController.php")
         .then((res) => res.json())
         .then((data) => {
             this.tbody.innerHTML = "";
@@ -75,71 +84,79 @@ const cart = new(function(){
                     <td>$${item.price}</td>
                     <td>${item.amount} u</td>
                     <td>$${item.total}</td>
-                    <td><button href='javascript:;' class='btnDel' onclick='cart.delItem(${item.code})'>Delete</button></td>
+                    <td><button class='btnDelHome' name='btnDelHome' onclick='cart.delItemAndUpdateStockRetrieve(${item.code})'>Delete</button></td>
                 </tr>
                 `
             })
         })
     }
     //mds desliguei meu cerebro 
-    this.saveOrder = () => {
-
-        var totalRaw = parseFloat(this.price.value) * parseFloat(this.amount.value)
-        console.log(totalRaw)
-        
+    this.saveOrder = async () => {
+        //e.preventDefault();
+        var totalRaw = parseFloat(this.price.value) * parseFloat(this.amount.value);
+        //console.log(totalRaw);
         this.total = parseFloat(totalRaw) + (parseFloat(this.tax.value) / 100) * totalRaw;
-        
+    
         var form = new FormData();
-
         form.append('prod', this.prod.value);
         form.append('price', this.price.value);
         form.append('amount', this.amount.value);
         form.append('total', this.total);
         form.append('tax', this.tax.value);
-
-        this.checkValue((isValid) => {
-            if(isValid){
-                fetch('../controllers/cartController.php', {
+    
+        try {
+            const isValid = await this.checkValue();
+            //console.log(isValid)
+            if(isValid) {
+                const response = await fetch('../controllers/cartController.php', {
                     method: "POST",
                     body: form,
-                })
-                .then((res) => res.json())
-                .then((data) => {
-                    this.show();
-                    //this.clear();
-                    this.totalPlusTax();
-                })
-                .catch((error) => console.log(error))   
-            }else{
-                console.log('celta camaleao')
+                });
+                const data = await response.json();
+                this.show();
+                this.clear();
+                this.totalPlusTax();
+                this.updateStock();
+            } else {
+                console.log('celta camaleao');
             }
-        })
-        //console.log(this.checkValue())
-    }
+        } catch(error) {
+            //console.log(error);
+        }
+    };
+
 
     var totalTax = 0;
     var totalPrice = 0;
-    var totalBuy = totalPrice + totalTax; 
+    //var totalBuy = totalPrice + totalTax; 
     document.getElementById('totalTxt').innerText = "Total: $";
     document.getElementById('taxTxt').innerText = "Tax: $";
     this.totalPlusTax = () => {
+        var oldTax = totalTax;
+        var oldPrice = totalPrice;
 
+         var newTotalTax = 0;
+        totalTax = 0;
+        
         fetch("../controllers/cartController.php")
         .then((res) => res.json())
         .then((data) => {
             data.forEach((item) => {
                 totalPrice += item.amount * item.price;
-                totalTax += item.amount * (item.price * (item.tax/100));
+                newTotalTax += item.amount * (item.price * (item.tax/100));
             })
-            var totalBuy = totalPrice + totalTax;
+            var totalBuy = totalPrice + newTotalTax;
             document.getElementById('totalTxt').innerText = "Total: $" + totalBuy.toFixed(2);
-            document.getElementById('taxTxt').innerText = "Tax: $" + totalTax.toFixed(2);
+            document.getElementById('taxTxt').innerText = "Tax: $" + newTotalTax.toFixed(2);
+            totalPrice = oldPrice;
+            totalTax = newTotalTax;
         })
         .catch((error) => console.log(error))
 
     }
 
     this.delItem = (code) => {
+        //this.updateStock();
         var form = new FormData();
         form.append('code', code);
         fetch("../controllers/cartController.php", {
@@ -151,9 +168,24 @@ const cart = new(function(){
             alert("Item deleted");
             this.show();
             this.totalPlusTax();
+            
         })
         .catch((error) => console.log(error))
     }
+
+    this.delItemAndUpdateStockRetrieve = (code) => {
+        this.delItem(code); // Chama a função original para deletar o item
+        fetch("../../controllers/orderController.php", {
+            method: "POST",
+            body: new URLSearchParams({update: true}), // Envie um parâmetro para indicar que é um clique no botão de delete
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            //console.log(data)
+            this.totalPlusTax();
+        })
+        .catch((error) => console.error("Erro ao atualizar o estoque:", error));
+    };
 
     this.placeOrder = () => {
         /* var form = new FormData()
@@ -182,7 +214,7 @@ const cart = new(function(){
         .then((res) => res.json())
         .then((data) => {
             if (data.success) {
-                this.updateStock();
+                //this.updateStock();
                 this.clearCart();
                 this.totalPlusTax();
                 this.clear()
@@ -215,15 +247,16 @@ const cart = new(function(){
             alert('stock updated');
         })
         .catch((error) => console.log(error))
+        location.reload();
     }
+
+
 
     this.clear = () => {
         this.amount.value = '';
-        this.prod.value = '';
+        this.prod.value = "Product";
         this.tax.value = '';
         this.price.value = '';
-        document.getElementById('totalTxt').innerText = "Total: $0.00";
-        document.getElementById('taxTxt').innerText = "Tax: $0.00";
     }
 })
 cart.popProd();

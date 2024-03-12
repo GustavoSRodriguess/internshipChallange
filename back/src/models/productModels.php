@@ -8,9 +8,10 @@ class Product extends Connection{
             $stmt = Connection::getConnection()->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll();
+            error_log(print_r($result, true));
             return $result;
         }catch(PDOException $th){
-            echo $th->getMessage();
+            throw new Exception("Erro ao pegar os dados: " . $th->getMessage());
         }
     }
 

@@ -4,6 +4,9 @@
         <title>Products</title>
         <link rel="stylesheet" href="../otherTabs/products/products.css">
         <link rel="stylesheet" href="../../index.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     </head>
     <body>
         <div class="header">
@@ -17,7 +20,7 @@
         </div>
         <div class="body">
             <div class="leftSide">
-                <form id="formProduct" onsubmit="prod.save()">
+                <form action="javascript:void(0);" id="formProduct" onsubmit="prod.save()">
                     <input type="text" id="name" name="prodName" placeholder="Product Name"><br>
 
                     <input type="number" id="amountProd" name="amount" placeholder="Amount" min="1"><br>

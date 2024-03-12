@@ -19,9 +19,9 @@ openModalButton.forEach(button => {
             data.forEach((item) => {
                 modalBody.innerHTML += `
                 <div><b>Product name</b>: ${item.name}</div>
-                <div><b>Amount</b>: ${item.amount}</div>
-                <div><b>Price</b>: ${item.price}</div>
-                <div><b>Tax</b>: ${item.tax}</div>
+                <div><b>Amount</b>: ${item.amount} u</div>
+                <div><b>Price</b>:$ ${item.price}</div>
+                <div><b>Tax</b>: ${item.tax}%</div>
                 </br>
                 `;
             });

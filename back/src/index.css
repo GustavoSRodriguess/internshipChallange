@@ -1,5 +1,3 @@
-
-
 body ,html{
     margin: 0;
     font-family: "Roboto", sans-serif;
@@ -186,7 +184,7 @@ tr{
     justify-content: flex-end;
 }
 
-.btnDel{
+.btnDelHome{
     background-color: #6a65fe;
     border:none;
     border-radius: 3px;
@@ -196,7 +194,7 @@ tr{
     transform: 0.9s;
 }
 
-.btnDel:hover{
+.btnDelHome:hover{
     transform: scale(1.03);
 }
 
