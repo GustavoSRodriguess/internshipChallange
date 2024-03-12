@@ -174,10 +174,10 @@ const cart = new(function(){
     }
 
     this.delItemAndUpdateStockRetrieve = (code) => {
-        this.delItem(code); // Chama a função original para deletar o item
+        this.delItem(code); 
         fetch("../../controllers/orderController.php", {
             method: "POST",
-            body: new URLSearchParams({update: true}), // Envie um parâmetro para indicar que é um clique no botão de delete
+            body: new URLSearchParams({update: true}), 
         })
         .then((res) => res.json())
         .then((data) => {
