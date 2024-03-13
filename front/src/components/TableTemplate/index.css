@@ -1,0 +1,15 @@
+.tableContainer{
+    display: block;
+    height: 60%;
+    border-collapse: collapse;
+    overflow-y: scroll;
+    box-shadow: 0px 15px 42px 5px rgba(0,0,0,0.59);
+    border-radius: 10px;
+    padding: 15px;
+    margin-right: 20px;
+    height: 100%;
+}
+
+th{
+    width: 100%;
+}

@@ -1,0 +1,26 @@
+.headerContainer{
+    background-color: #323437;
+    width: auto;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    text-decoration: none;
+    border-radius: 0px 0px 15px 15px;
+    box-shadow: 0px 15px 42px 5px rgba(0,0,0,0.59)
+}
+
+.nameStore{
+    text-decoration: none;
+    color: black;
+    display: flex;
+}
+
+.firstName{
+    color: #d4a916;
+}
+
+.secondName{
+    color: #d1d0c5
+}
+/*#d4a916*/

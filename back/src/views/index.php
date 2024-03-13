@@ -25,6 +25,7 @@ header("Cache-Control: no-cache, must-revalidate");
         <div class="body">
             <div class="leftSide">
                 <form action="javascript:void(0);" id="shopForm" onsubmit="cart.saveOrder()">
+                <h2>Welcome</h2></br>
                     <select name="product" id="prod" required onchange="cart.autoComplete()">
                         <option value=" " disabled selected>Product</option>
                     </select><br>
