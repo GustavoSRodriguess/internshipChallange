@@ -7,12 +7,22 @@ function Categories(){
 
     const [categories ,setCategories] = useState([]);
 
-
-
     useEffect(() => {
         showCategories()
-        
-    })
+    }, [])
+
+
+
+    const columns = [
+        {key: 'code', title: 'Code'},
+        {key: 'name', title: 'Ctegory Name'},
+        {key: 'tax', title: 'Tax (%)'},
+    ];
+
+    const categoryFields = [
+        {name: 'name', type: 'text', placeHolder: 'Category Name'},
+        {name: 'tax', type: 'number', placeHolder: 'Tax (%)'}
+    ];
 
     function showCategories(){
         fetch("http://localhost:80/controllers/categoryController.php")
@@ -23,54 +33,43 @@ function Categories(){
         .catch((error) => console.log(error));
     }
 
-    function saveCategory(){
+    function saveCategory(formData){
         var form = new FormData();
-        form.append("name", this.state.name);
-        form.append("tax", this.state.tax);
+        form.append("name", formData.name);
+        form.append("tax", formData.tax);
  
         fetch("http://localhost:80/controllers/categoryController.php", {
             method: "POST",
-  
+            body: form
         })
         .then((res) => res.json())
         .then((data) => {
-
+            console.log(data);
+            showCategories()
         })
         .catch((error)=> console.log(error))
     }
 
+    const handleDelete = (code) => {
+        fetch(`http://localhost:80/controllers/categoryController.php?code=${code}`, {
+            method: "DELETE",
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            //console.log('category deleted: ', data)
+            setCategories(categories.filter((category) => category.code !== code))
+        })
+        .catch((error) => console.log(error));
+    }
+    
+
     return(
         <div className="categoriesContainer">
             <div className="leftSide">
-                <FormTemplate onSubmit={(e) => e.preventDefault()}>
-                    <input type="text" id="name" name="catName" placeholder="Category Name"/><br/>
-
-                    <input type="number" id="tax" name="tax" placeholder="Tax (%)" step="0.1" min="0"/><br/>
-
-                    <input type="submit" value="Add Category" id="submitBtn"/>
-                </FormTemplate>
+                <FormTemplate text='Add a category' fields={categoryFields} onSbubmit={saveCategory}/>
             </div>
             <div className="rightSide">
-                <TableTemplate>
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Category</th>
-                            <th>Tax (%)</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-                        {categories.map((category) => (
-                            <tr key={category.code}>
-                                <td>{category.code}</td>
-                                <td>{category.name}</td>
-                                <td>{category.tax}</td>
-                                <td><button className="btnDel">Delete</button></td>
-                            </tr>
-                        ))}
-                   </tbody>
-                </TableTemplate>
+                <TableTemplate data={categories} columns={columns} handleDelete={handleDelete}/>
             </div>
         </div>
     )

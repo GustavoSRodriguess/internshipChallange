@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import Header from './components/Header'
-import Home from './components/Home'
+
 import './App.css'
 import Categories from './Routes/Categories';
+import  Products  from './Routes/Products';
+import Home from './Routes/Home';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
 <div className='teste'>
@@ -17,7 +16,8 @@ function App() {
     <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='/categories' element={<Categories/>}/>
-
+      <Route path='/products' element={<Products/>}/>
+      <Route path='/home' element={<Home/>}/>
     </Routes>
   </BrowserRouter>
 </div>

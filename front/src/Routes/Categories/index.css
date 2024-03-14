@@ -5,12 +5,16 @@
     width: 89%;
     height: 25px;
     border-radius: 5px;
-
+    color: #d1d0c5;
 }
 
 #name:focus, #tax:focus{
     outline-style: solid;
-    outline-color:#d4a916;;
+    outline-color:#d4a916;  
+}
+
+textarea{
+    color:#d1d0c5; 
 }
 
 #submitBtn{
