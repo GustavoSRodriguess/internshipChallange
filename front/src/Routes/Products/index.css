@@ -15,22 +15,3 @@
 .leftSide{
     flex: 50%;
 }
-#name, #price, #amount, #category_code{
-    padding-left: 10px;
-    border: none;
-    background-color: #494a4d;
-    width: 89%;
-    height: 25px;
-    border-radius: 5px;
-    color: #d1d0c5;
-}
-
-#price:focus, #amount:focus, #category_code:focus{
-    outline-style: solid;
-    outline-color:#d4a916;  
-}
-
-#category_code{
-    width: 91%;
-    margin-bottom: 15px;
-}

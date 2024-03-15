@@ -1,0 +1,21 @@
+.leftSide{
+    flex: 50%
+}
+
+.homeContainer{
+    display: flex;
+    align-items: center;
+    height: 50vh;
+}
+
+#prod_code{
+    padding-left: 10px;
+    border: none;
+    background-color: #494a4d;
+    width: 89%;
+    height: 25px;
+    border-radius: 5px;
+    color: #d1d0c5;
+    width: 91%;
+    margin-bottom: 15px;
+}

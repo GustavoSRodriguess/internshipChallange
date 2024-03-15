@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from './components/Header'
-
 import './App.css'
 import Categories from './Routes/Categories';
 import  Products  from './Routes/Products';
 import Home from './Routes/Home';
+import { Footer } from './components/Footer';
 
 function App() {
 
