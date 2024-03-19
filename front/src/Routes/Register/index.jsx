@@ -28,22 +28,21 @@ export const Register = () => {
         })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data)
-            naviget('/')
+            if(data === 'Email alresy in use'){
+                setMsg(data)
+            }else{
+                console.log(data)
+                naviget('/')
+            }
+
         })
         .catch((error) => console.log(error))
-    }
-
-    function displayMsg(){
-
-        <span>error</span> 
-    
     }
 
   return (
     <>
     <div className='registerContainer'>
-        <FormTemplate text='Register' fields={registerFields} onSbubmit={saveUser} textFooter={teste}/>
+        <FormTemplate msg={msg} text='Register' fields={registerFields} onSbubmit={saveUser} textFooter={teste}/>
     </div>
     </>
   )

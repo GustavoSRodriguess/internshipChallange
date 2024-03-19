@@ -13,15 +13,17 @@ class Register extends Connection{
             $user = $stmt_email->fetch(PDO::FETCH_ASSOC);
             if($user){
                 return "Email alresy in use";
+            }else{
+                $sql = 'INSERT INTO USERS (username, email, pwd) VALUES (:username, :email, :pwd)';
+                $stmt = COnnection::getConnection()->prepare($sql);
+                $stmt->bindParam(':username', $data['username']);
+                $stmt->bindParam(':email', $data['email']);
+                $stmt->bindParam(':pwd', $data['pwd']);
+                $stmt->execute();
+                return true;
             }
 
-            $sql = 'INSERT INTO USERS (username, email, pwd) VALUES (:username, :email, :pwd)';
-            $stmt = COnnection::getConnection()->prepare($sql);
-            $stmt->bindParam(':username', $data['username']);
-            $stmt->bindParam(':email', $data['email']);
-            $stmt->bindParam(':pwd', $data['pwd']);
-            $stmt->execute();
-            return true;
+
         }catch(PDOException $th){
             echo $th->getMessage();
         }
