@@ -1,0 +1,31 @@
+.loginContanier{
+    display: flex;
+    flex-direction: column;
+}
+
+.registerBtn, .iForgor{
+    display: flex;
+    color: #d1d0c5;
+    margin-left: 10px;
+}
+
+.registerDiv{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#email, #pwd, #username{
+    padding-left: 10px;
+    border: none;
+    background-color: #494a4d;
+    width: 89%;
+    height: 25px;
+    border-radius: 5px;
+    color: #d1d0c5;
+}
+
+#email:focus, #pwd:focus, #username:focus{
+    outline-style: solid;
+    outline-color:#d4a916; 
+}

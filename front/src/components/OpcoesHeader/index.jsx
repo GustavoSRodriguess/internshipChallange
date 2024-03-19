@@ -1,15 +1,19 @@
 import { Link } from 'react-router-dom';
 import './index.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const pathOptions = ['PRODUCTS', 'CATEGORIES', 'HISTORY'];
 
 function OpcoesHeader() {
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState(localStorage.getItem('selectedOption') || '');
 
     const handleOptionClick = (option) => {
         setSelectedOption(option);
     };
+
+    useEffect(() => {
+        localStorage.setItem('selectedOption', selectedOption);
+    }, [selectedOption]);
 
     return (
         <div className='opcoesContainer'>

@@ -4,8 +4,12 @@ import FormTemplate from "../../components/FormTemplate";
 import "./index.css"
 
 import { CartDetails } from "../../components/CartDetails";
+import Header from "../../components/Header";
 
 function Home(){
+
+    //poderia ter modulado mt mais aprtes disso aqui, se der tempo 
+    //fica pro futuro, so mt macaco e fiquei pra traz
 
     const [tax, setTax] = useState('')
     const [price, setPrice] = useState('')
@@ -23,9 +27,6 @@ function Home(){
         }
     }, [prodPopulated]);
 
-
-
-
     const columns = [
         {key: 'prod_name', title: 'Product'},
         {key: 'price', title: 'Unit Price'},
@@ -41,6 +42,7 @@ function Home(){
         {name: 'amount', type: 'number', placeHolder: 'Amount'},
         {name: 'taxHome', type: 'number', placeHolder: 'Tax (%)'}
     ];
+
     function popProd(){
         fetch("http://localhost:80/controllers/prodController.php")
         .then((res) => res.json())
@@ -57,9 +59,6 @@ function Home(){
 
     function autoComplete() {
 
-        //var price = document.getElementById('price');
-        //var tax = document.getElementById('tax');
-
         fetch("http://localhost:80/controllers/prodController.php")
         .then((res) => res.json())
         .then((data) => {
@@ -69,15 +68,8 @@ function Home(){
             if(selectedProduct){
                 setPrice(selectedProduct.price)
                 setTax(selectedProduct.category_tax)
-                // console.log(price)
-                //price.value = selectedProduct.price;
-                //tax.value = selectedProduct.category_tax;
-                console.log(price)
-                console.log(tax)
                 price.disabled = true
                 tax.disabled = true 
-
-
             }else{
                  console.log('eror');
             }         
@@ -105,7 +97,7 @@ function Home(){
         .catch((error) => console.log(error))
     }
 
-    function saveCart(formData){
+    async function saveCart(formData){
 
         var totalRaw = price * formData.amount
         var total = totalRaw + (tax/100) * totalRaw
@@ -118,36 +110,77 @@ function Home(){
         form.append('total', total); //sinto q ese aqui vai mudar
         form.append('tax', tax);
     
-        //try {
-           // const isValid = await this.checkValue();
-            //console.log(isValid)
-           // if(isValid) {
-        fetch('http://localhost:80/controllers/cartController.php', {
-            method: "POST",
-            body: form,
+        try {
+            const isValid = await checkValue(formData);
+            if(isValid) {
+                fetch('http://localhost:80/controllers/cartController.php', {
+                    method: "POST",
+                    body: form,
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    showCart();
+                    updateStock();
+                })
+                .catch((error) => console.log(error))
+            } else {
+                console.log('celta camaleao');
+            }
+        }catch(error) {
+            console.log(error);
+        }
+    }
+
+    function updateStock() {
+        fetch("http://localhost:80/controllers/orderController.php", {
+            method: "UPDATE"
         })
         .then((res) => res.json())
         .then((data) => {
+            alert('stock updated');
             showCart();
-            clear()
         })
         .catch((error) => console.log(error))
-               // this.show();
-               // this.clear();
-              //  this.totalPlusTax();
-              //  this.updateStock();
-           // } else {
-              //  console.log('celta camaleao');
     }
-        //} catch(error) {
-            //console.log(error);
-       // 
 
-    function clear(){
-        price = "";
-        tax = '';
-    }
+    async function checkValue(formData){
+        var prod_code = document.getElementById('prod_code').value
+        try {
+            const response = await fetch("http://localhost:80/controllers/prodController.php");
+            const data = await response.json();
+            const insertAmount = formData.amount;
+            const prodSelect = prod_code;
+            const findProd = data.find(prod => prod.code == prodSelect);
+            const foundProdAmount = parseInt(findProd.amount);
+
+            if(findProd && insertAmount <= foundProdAmount){
+                console.log('tudo certo');
+                return true;
+            } else {
+                var sub = parseInt(insertAmount) - parseInt(foundProdAmount);
+                alert(`Too many items, remove ${sub} items`);
+                return false;
+            }
+        } catch(error) {
+            console.log(error);
+            return false;
+        }
+    };
+
+    function delItemAndUpdateStockRetrieve(code) {
+        handleDelete(code); 
+        fetch(`http://localhost:80/controllers/orderController.php?code=${code}`, {
+            method: "POST",
+            body: new URLSearchParams({update: true}), 
+        })
+        .then((res) => res.json())
+        .then((data) => {
+        })
+        .catch((error) => console.error("Erro ao atualizar o estoque:", error));
+    };
+
     return(
+        <>
         <div className="homeContainer">
             <div className="leftSide">
                 <FormTemplate 
@@ -160,10 +193,11 @@ function Home(){
                 />
             </div>
             <div className="rightSide">
-                <TableTemplate data={cart} columns={columns} handleDelete={handleDelete}/>
-                <CartDetails/>
+                <TableTemplate data={cart} columns={columns} handleDelete={delItemAndUpdateStockRetrieve}/>
+                <CartDetails showCart={showCart}/>
             </div>
         </div>
+        </>
     )
 }
 

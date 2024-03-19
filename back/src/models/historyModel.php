@@ -16,7 +16,16 @@ class History extends Connection{
         }catch(PDOException $th){
             echo $th->getMessage();
         }
-
-        
+    }
+    public static function showHistory(){
+        try{
+            $sql = "SELECT * FROM ORDERS";
+            $stmt = Connection::getConnection()->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        }catch(PDOException $th){
+            echo $th->getMessage();
+        }
     }
 }

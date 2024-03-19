@@ -1,0 +1,30 @@
+.cancelOrder, .finishOrder{
+    width: 20%;
+    height: 30px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 4px;
+}
+
+.cancelOrder:hover, .finishOrder:hover{
+    transform: scale(1.03);
+}
+
+.finishOrder{
+    background-color: #d4a916;
+}
+
+.cartDetailsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 5%;
+}
+
+.homeButtonsContainer{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}

@@ -1,3 +1,8 @@
+.formContainer{
+  display: flex;
+  justify-content: center;
+}
+
 .formTemplate{
     display: flex;
     flex-direction: column;
@@ -8,7 +13,6 @@
     border-radius: 10px;
     width: 80%;
     margin-top: 50px;
-    margin-left: 40px;
     padding: 20px;
 }
 
@@ -21,6 +25,10 @@
 
 .headerForm{
     color: #d1d0c5;
+}
+
+.textFooter{
+  width: 90%;
 }
 
 #name, #price, #amount, #category_code, #taxHome, #priceHome{

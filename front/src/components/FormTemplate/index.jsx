@@ -1,15 +1,16 @@
 import { useState } from "react"
 import "./index.css"
 
-function FormTemplate({fields, onSbubmit, text, autoComplete, price, tax}) {
+function FormTemplate({fields, onSbubmit, text, autoComplete, price, tax, msg,textFooter, style}) {
 
     const [formData, setFormData] = useState({})
 
     const handleChange = (e) => {
         setFormData((prevFormData) => ({
             ...prevFormData,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         }));
+
     };
 
     const handleSumit = (e) => {
@@ -32,11 +33,14 @@ function FormTemplate({fields, onSbubmit, text, autoComplete, price, tax}) {
         <div className="formContainer">
         <form className="formTemplate" onSubmit={handleSumit}>
             <h2 className="headerForm">{text}</h2>
+            <p>{msg}</p>
+            
             {window.location.pathname === '/home' && (
                      <select 
                      name='prod_code'
                      id='prod_code'
                      onChange={autoComplete}
+                     required
                      >
                         <option value='' disabled selected>Product</option>
                     </select>
@@ -52,6 +56,7 @@ function FormTemplate({fields, onSbubmit, text, autoComplete, price, tax}) {
                     onChange={handleChange}
                     id={field.name}
                     readOnly={field.name === 'priceHome' || field.name === 'taxHome'}
+                    required
                     /><br/>
                 </div>
                 
@@ -60,6 +65,7 @@ function FormTemplate({fields, onSbubmit, text, autoComplete, price, tax}) {
                      <select 
                      name='category_code'
                      id='category_code'
+                     required
                      >
                         <option value='' disabled selected>Category</option>
                     </select>
@@ -67,7 +73,7 @@ function FormTemplate({fields, onSbubmit, text, autoComplete, price, tax}) {
             <div className="submitDiv">
                 <button className="submitBtn">Submit</button>
             </div>
-            
+            <p className="textFooter">{textFooter}</p>
         </form>
         </div>
     )

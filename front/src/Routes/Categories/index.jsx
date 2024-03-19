@@ -14,8 +14,8 @@ function Categories(){
 
 
     const columns = [
+        {key: 'name', title: 'Category Name'},
         {key: 'code', title: 'Code'},
-        {key: 'name', title: 'Ctegory Name'},
         {key: 'tax', title: 'Tax (%)'},
     ];
 

@@ -9,3 +9,13 @@ if(isset($_GET['orderId'])){
 }else{
     json_encode([]);
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "GET"){
+    if(isset($_GET['code'])){
+        $orderId = $_GET['code'];
+        echo json_encode(History::showDetails($orderId));
+    
+    }else{
+        echo json_encode(History::showHistory());
+    }
+}

@@ -10,6 +10,14 @@
     box-shadow: 0px 15px 42px 5px rgba(0,0,0,0.59)
 }
 
+.userLogout{
+    display: flex;
+    width: 100%;
+    margin-right: 50px;
+    flex-direction: row-reverse;
+    font-weight: 600;
+}
+
 .nameStore{
     text-decoration: none;
     color: black;
@@ -22,5 +30,10 @@
 
 .secondName{
     color: #d1d0c5
+}
+
+.logOut{
+    display: flex;
+    cursor: pointer;
 }
 /*#d4a916*/

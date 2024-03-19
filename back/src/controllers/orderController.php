@@ -2,6 +2,7 @@
 require_once "../models/orderModel.php";
 
 header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE, UPDATE');
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     if(isset($_POST['update'])){
@@ -12,6 +13,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     }
 }elseif($_SERVER["REQUEST_METHOD"] === "UPDATE"){
     echo json_encode(Order::updateStock());
-}else{
+}elseif($_SERVER["REQUEST_METHOD"] === "DELETE"){
     echo json_encode(Order::deleteCart());
 }

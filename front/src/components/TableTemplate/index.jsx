@@ -1,7 +1,7 @@
 import './index.css'
 import React from 'react'
 
- function TableTemplate({data, columns, handleDelete}) {
+ function TableTemplate({data, columns, handleDelete, handleView}) {
 
     return (
         <table className='tableContainer'>
@@ -19,7 +19,15 @@ import React from 'react'
                             <td key={columns.key}>{row[columns.key]}</td>
                             
                         ))}
-                        <td><button className='btnDel' onClick={() => handleDelete(row.code)}>Delete</button></td>
+
+                        {window.location.pathname !== '/history' && (
+                             <td><button className='btnDel' onClick={() => handleDelete(row.code)}>Delete</button></td>
+                        )}
+
+                        {window.location.pathname === '/history' && (
+                            <td><button data-modal-target='#modal' onClick={() => handleView(row.code)} className='btnView'>View</button></td>
+                        )}
+                       
                     </tr>
                 ))}
             </tbody>   

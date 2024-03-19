@@ -90,10 +90,7 @@ function Products() {
         })
         .catch((error) => console.log(error))
     }
-
-
     
-
   return (
     <div  className="prodContainer">
         <div className="leftSide">
